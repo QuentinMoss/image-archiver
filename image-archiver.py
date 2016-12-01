@@ -4,23 +4,24 @@
 import os,sys
 
 def main():
-    # Take argument on script execution. Provided directory should contain all images.
+    # Take argument on script execution. Provided directory should contain all images. Referred to as parent directory
     directory_path = sys.argv[1]
 
     # Create the archiev directory if it does not exist
     createArchiveDirectory()
 
-    #print directory_path
+    # Print out the directory
     for folderName, subfolders, filenames in os.walk(directory_path):
-        print('The current folder is ' + folderName)
+        print('The provided parent directory is *' + folderName + '*')
     for subfolder in subfolders:
-        print('subfolder of ' + folderName + ': ' + subfolder)
+        print('The parent directory contains the following sub folders *' + folderName + ': ' + subfolder + '*')
     for filename in filenames:
-        print('file inside' + folderName + ': '+ filename)
+        print('Found the following files *' + folderName + '/'+ filename + '*')
 
+# Define function that creates directory if it does not exist
 def createArchiveDirectory():
-    if not os.path.exists('archiev'):
-        os.makedirs('archiev')
+    if not os.path.exists('archive'):
+        os.makedirs('archive')
 
 if __name__ == "__main__":
     main()
