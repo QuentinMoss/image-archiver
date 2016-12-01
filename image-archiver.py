@@ -14,12 +14,8 @@ def main():
     # Print out the directory structure we will be working with
     for folderName, subfolders, filenames in os.walk(directory_path):
         print('The provided parent directory is *' + directory_path + '*')
-        for subfolder in subfolders:
-            print('The parent directory contains the following sub folders *' + folderName + ': ' + subfolder + '*')
-        for filename in filenames:
-            print('Found the following files *' + folderName + '/'+ filename + '*')
 
-# Define function that creates directory if it does not exist
+# Creates archiev directory if it does not exist
 def createArchiveDirectory():
     if not os.path.exists('archive'):
         os.makedirs('archive')
