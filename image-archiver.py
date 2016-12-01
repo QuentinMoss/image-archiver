@@ -10,7 +10,7 @@ def main():
     # Create the archiev directory if it does not exist
     createArchiveDirectory()
 
-    # Print out the directory
+    # Print out the directory structure we will be working with
     for folderName, subfolders, filenames in os.walk(directory_path):
         print('The provided parent directory is *' + folderName + '*')
     for subfolder in subfolders:
