@@ -30,6 +30,6 @@ for i in $(find $IMAGE_PATH -type d -mtime +30 | tee /var/tmp/archive-images); \
 # Rsync does not support removing directories and files. I would love to be proved wrong here. Because this straight up G
 if [ $RESULT == 0 ]; then
   echo "Rsync completed successfully"
-  for i in $(cat /var/tmp/archive-images); do rm -rf $i; done
+  for i in $(cat /var/tmp/archive-images); do rmdir $i; done
 fi
 
