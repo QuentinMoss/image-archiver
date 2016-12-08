@@ -7,34 +7,33 @@
 #
 # Created by Quentin Moss <quejmoss@gmail.com>
 #######################################################################################################################
-IMAGE_PATH=/home/rsync_tests/images
-ARCHIVE_PATH=/home/rsync_tests/archive
+image_path=/home/rsync_tests/images
+archive_path=/home/rsync_tests/archive
 
 # We need to handle spaces in file names. We will set internal field separator as new line
 IFS="
 "
 
 # Verify provided directory exists
-if [ ! -d $IMAGE_PATH ]; then
-	echo $IMAGE_PATH "does not exist"
+if [ ! -d $image_path ]; then
+	echo $image_path "does not exist"
 	exit 1
 fi
 
-if [ ! -d $ARCHIVE_PATH ]; then
-	echo $ARCHIVE_PATH "does not exist"
+if [ ! -d $archive_path ]; then
+	echo $archive_path "does not exist"
 	exit 1
 fi
 
 # Start image sync, and remove source files after successful sync.
-for i in $(find "$IMAGE_PATH" -type f -mtime +30); do
+for i in $(find "$image_path" -type f -mtime +30); do
 	echo "[$i]"
-	FILE=$(basename "$i")
-	FILEPARENT=$(echo "$i" | sed -e s%$IMAGE_PATH%% -e s%$FILE%%)
-	YEAR=$(date +%Y -r "$i")
-	#FILEDATE=$(stat -c '%y' "$i" | date "+%Y/%m")
-	mkdir -p $ARCHIVE_PATH/$YEAR/$FILEPARENT
-	rsync -van --stats --remove-source-files "$i" "$ARCHIVE_PATH/$YEAR/$FILEPARENT/$FILE" || exit 1
+	file=$(basename "$i")
+	fileparent=$(echo "$i" | sed -e s%$image_path%% -e s%$file%%)
+	year=$(date +%Y -r "$i")
+	mkdir -p $archive_path/$year/$fileparent
+	rsync -van --stats --remove-source-files "$i" "$archive_path/$year/$fileparent/$file" || exit 1
 done
 
 echo "Rsync completed successfully. Removing empty directories"
-find $IMAGE_PATH -type d -empty -not -path $IMAGE_PATH -ls -delete | sed -e "s/$/  < deleted/"
+find $image_path -type d -empty -not -path $image_path -ls -delete | sed -e "s/$/  < deleted/"
