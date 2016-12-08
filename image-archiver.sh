@@ -8,12 +8,8 @@
 #    If the direcotry is older than 30 days then everything inside will be archived
 # Created by Quentin Moss <quejmoss@gmail.com>
 #######################################################################################################################
-IMAGE_PATH=images/
-ARCHIVE_PATH=archive/
-
-# We need to handle spaces in file names. We set new line as delimiter.
-IFS="
-"
+IMAGE_PATH=replace
+ARCHIVE_PATH=replace
 
 # Verify provided directory exists
 if [ ! -d $IMAGE_PATH ]; then
@@ -27,12 +23,13 @@ if [ ! -d $ARCHIVE_PATH ] ; then
 fi
 
 # Start image sync, and remove source files after successful sync.
-for i in $(find $IMAGE_PATH -type f -mtime +30); \
-  do rsync -vaR --stats --remove-source-files "$i" $ARCHIVE_PATH; RESULT=$?; done
+for i in $(find $IMAGE_PATH -type d -mtime +30 | tee /var/tmp/archive-images); \
+  do rsync -av --stats $i $ARCHIVE_PATH; RESULT=$?; done
   echo $RESULT
 
 # Rsync does not support removing directories and files. I would love to be proved wrong here. Because this straight up G
 if [ $RESULT == 0 ]; then
   echo "Rsync completed successfully"
-  find $IMAGE_PATH -type d -empty -delete
+  for i in $(cat /var/tmp/archive-images); do rmdir $i; done
 fi
+
