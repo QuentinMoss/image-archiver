@@ -28,8 +28,8 @@ fi
 # Start image sync, and remove source files after successful sync.
 for i in $(find "$IMAGE_PATH" -type f -mtime +30); do
 	echo "[$i]"
-	FILEPARENT=$(basename $(dirname "$i"))
 	FILE=$(basename "$i")
+	FILEPARENT=$(echo "$i" | sed -e 's%$IMAGE_PATH%%' -e 's%$FILE%%')
 	#FILEDATE=$(stat -c '%y' "$i" | date "+%Y/%m")
 	mkdir -p $ARCHIVE_PATH/$FILEPARENT
 	rsync -van --stats --remove-source-files "$i" "$ARCHIVE_PATH/$FILEPARENT/$FILE" || exit 1
