@@ -2,16 +2,15 @@
 #Enable Debugging
 #set -x on
 #######################################################################################################################
-# This script will sync all folders (recursively) that are older to than 30 days to the specified archive directory
+# This script uses rsync to sync directory contents from source to desination while keeping a 1 to 1 directory structure.
+# * Note * This script does not handle dupliate directory names. Think of this as taking a snap shot if files meet a criteria.
 #
-# * Note * This script does not have logic to decide if the files inside of the directories have a modified time less than 30 days
-#    If the direcotry is older than 30 days then everything inside will be archived
 # Created by Quentin Moss <quejmoss@gmail.com>
 #######################################################################################################################
 IMAGE_PATH=/home/rsync_tests/images/
 ARCHIVE_PATH=/home/rsync_tests/archive
 
-# We need to handle spaces in file names. We set new line as delimiter.
+# We need to handle spaces in file names. We will set internal field separator as new line
 IFS="
 "
 
@@ -31,9 +30,9 @@ for i in $(find "$IMAGE_PATH" -type f -mtime +30); do
     echo "[$i]"
     FILEPARENT=$(basename $(dirname "$i"))
     FILE=$(basename "$i")
+    #FILEDATE=$(stat -c '%y' "$i" | date "+%Y/%m")
     rsync -van --stats --remove-source-files "$i" "$ARCHIVE_PATH/$FILEPARENT/$FILE"
 done
 
-# Rsync does not support removing directories and files. I would love to be proved wrong here. Because this straight up G
 echo "Rsync completed successfully. Removing empty directories"
 find $IMAGE_PATH -type d -empty -ls -delete | sed -e "s/$/  < deleted/"
