@@ -30,9 +30,10 @@ for i in $(find "$IMAGE_PATH" -type f -mtime +30); do
 	echo "[$i]"
 	FILE=$(basename "$i")
 	FILEPARENT=$(echo "$i" | sed -e s%$IMAGE_PATH%% -e s%$FILE%%)
+	YEAR=$(date +%Y -r "$i")
 	#FILEDATE=$(stat -c '%y' "$i" | date "+%Y/%m")
-	mkdir -p $ARCHIVE_PATH/$FILEPARENT
-	rsync -van --stats --remove-source-files "$i" "$ARCHIVE_PATH/$FILEPARENT/$FILE" || exit 1
+	mkdir -p $ARCHIVE_PATH/$YEAR/$FILEPARENT
+	rsync -van --stats --remove-source-files "$i" "$ARCHIVE_PATH/$YEAR/$FILEPARENT/$FILE" || exit 1
 done
 
 echo "Rsync completed successfully. Removing empty directories"
