@@ -33,8 +33,8 @@ if [ ! -d $image_path ]; then
 fi
 
 if [ ! -d $archive_mount ]; then
-	echo $archive_mount "does not exist, trying to mount.."
-	mount $archive_mount || exit 1
+	echo $archive_mount "does not exist"
+	exit 1
 fi
 
 for i in "$image_path"/*; do # per each subdirectory in images dir..
