@@ -54,4 +54,4 @@ for i in "$image_path"/*; do # per each subdirectory in images dir...
 done
 
 echo "Rsync completed successfully. Removing empty directories"
-find $image_path -type d -empty -not -path $image_path -ls -delete | sed -e "s/$/  < deleted/"
+find $image_path -type d -empty -not -path $image_path -ls -delete | awk '{print $11}' | sed -e "s/$/  < deleted/"
