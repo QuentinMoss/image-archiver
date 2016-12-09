@@ -5,12 +5,6 @@
 # This script uses rsync to sync directory contents from source to destination while keeping a 1 to 1 directory structure.
 # * Note * This script does not handle duplicate directory names. Think of this as taking a snap shot if files meet a criteria.
 #
-# Examples:
-#    move from:    nfs://productionstudio/digitalassets/_PHOTOS_FILES/CREATIVE/HL_HEROES
-#    move to:    smb://10.240.11.60/Archive_2016/HEROES/HL_HEROES
-#    move from:    nfs://productionstudio/digitalassets/_PHOTOS_FILES/CREATIVE/DUAL_FLASH
-#    move to:    smb://10.240.11.60/Archive_2016/HEROES/DUAL_FLASH
-#
 # Move criteria: all files in a given directory are at least thirty days old
 #
 # Note: at this point only handles directories directly under set $image_path, does not go deeper
