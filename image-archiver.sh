@@ -3,14 +3,12 @@
 #set -x on
 #######################################################################################################################
 # This script uses rsync to sync directory contents from source to destination while keeping a 1 to 1 directory structure.
-# * Note * This script does not handle duplicate directory names. Think of this as taking a snap shot if files meet a criteria.
 #
 # Move criteria: all files in a given directory are at least thirty days old
 #
 # Note: at this point only handles directories directly under set $image_path, does not go deeper
 # Note: uses directory timestamp year for archive year
 #
-# Created by Quentin Moss <quejmoss@gmail.com>
 #######################################################################################################################
 image_path=/tmp/rsync_tests/images
 archive_mount=/tmp/rsync_tests # note that this is now basically the archive path mount, not the whole path
