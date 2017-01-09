@@ -5,9 +5,25 @@
   tasks:
     - name: pull the git repo
       git:
-        repo: https://github.com/QuentinMoss/image-archiver.git #may want to consider adding our ssh key to github in case repo goes private
+        repo: https://github.com/QuentinMoss/image-archiver.git
         dest: /opt/image-archiver
         update: yes
         accept_hostkey: yes
+    - name: ensure samba utils are installed
+      yum: pkg={{item}} state=installed
+      with_items:
+        - samba-client
+        - samba-common
+        - cifs-utils
+    - name: ensure mountpaths exist
+      file: path=/mnt/photoarchive state=directory
+      file: path=/mnt/productionstudio state=directory
+    - name: ensure shares are mounted
+      mount: state="present" # smb://photoarchive.hautelook.local /mnt/photoarchive/
+        fstype="cifs"
+        opts="domain=,username=,password=," src="smb://photoarchive.hautelook.local" name="/mnt/photoarchive/"
+      mount: state="present" # nfs://productionstudio.hautelook.local:digitalassets  /mnt/productionstudio/
+        fstype="nfs"
+        opts="" src="nfs://productionstudio.hautelook.local:digitalassets" name="/mnt/productionstudio/"
     - name: run the image_archiver.sh script
       shell: "/opt/image-archiver/image-archiver.sh"
