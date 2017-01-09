@@ -1,0 +1,13 @@
+---
+- hosts: all
+  remote_user: hlauto
+  become: yes
+  tasks:
+    - name: pull the git repo
+      git:
+        repo: https://github.com/QuentinMoss/image-archiver.git #may want to consider adding our ssh key to github in case repo goes private
+        dest: /opt/image-archiver
+        update: yes
+        accept_hostkey: yes
+    - name: run the image_archiver.sh script
+      shell: "/opt/image-archiver/image-archiver.sh"
